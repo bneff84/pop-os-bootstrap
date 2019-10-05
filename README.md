@@ -1,4 +1,4 @@
-#Pop_OS! 19.04 Bootstrap Project
+# Pop_OS! 19.04 Bootstrap Project
  
 This repo contains a few files intended to make setting up a brand new development environment on Pop_OS! 19.04 quick
 and easy.
