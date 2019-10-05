@@ -85,6 +85,10 @@ sudo apt -y install gir1.2-webkit2-4.0 openconnect
 #setup the user in mysql to work from anywhere with no password for easy access
 sudo mysql -e "create user '$USER'@'%'; grant all on *.* to '$USER'@'%' with grant option; flush privileges;"
 
+#increase the inotify limit to something a bit more reasonable
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+
 #install valet linux
 composer global require cpriego/valet-linux
 
