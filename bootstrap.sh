@@ -53,8 +53,8 @@ sudo kernelstub -a button.lid_init_state=open
 #add custom repo for older versions of php
 sudo add-apt-repository ppa:ondrej/php -y
 
-# remove preinstalled stuff we don't need (aka apache) and cleanup any unused packages
-sudo apt -y remove apache2
+# remove preinstalled stuff we don't need/want and cleanup any unused packages
+sudo apt -y remove apache2 geary
 sudo apt -y autoremove
 
 #run an update of repos and upgrade any existing software with available upgrades before continuing
@@ -62,8 +62,8 @@ sudo apt update
 sudo apt -y upgrade
 
 #install all required software
-#install mysql server, git, composer, dbeaver (DB GUI) and dependencies for valet-linux
-sudo apt -y install git jq xsel libnss3-tools composer mysql-server dbeaver-ce
+#install mysql server, git, composer, dbeaver (DB GUI), evolution mail client and exchange web services, and dependencies for valet-linux
+sudo apt -y install git jq xsel libnss3-tools composer mysql-server dbeaver-ce evolution evolution-ews
 #install php 7.3
 sudo apt -y install php7.3 php7.3-fpm php7.3-cli php7.3-common php7.3-curl php7.3-gd php7.3-bcmath php7.3-xml php7.3-mbstring php7.3-xml php7.3-xmlrpc php7.3-mysql php7.3-soap php7.3-intl php7.3-ldap php7.3-curl
 #php 7.2 causes errors in valet-linux at the time of the creating of this tool, hence it not being included -- install at your own risk
