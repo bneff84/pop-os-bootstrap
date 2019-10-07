@@ -1,0 +1,9 @@
+#!/bin/bash
+if [ -z "$1" ]; then
+    echo "Usage: php-version <7.3|7.1|5.6>"
+    echo "       Changes the current PHP version used by the system and valet-linux at the same time."
+    php --version
+else
+    sudo valet use "$1"
+    sudo update-alternatives --set php "/usr/bin/php$1"
+fi

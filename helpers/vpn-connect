@@ -1,0 +1,11 @@
+#!/bin/bash
+BASEDIR="$( cd "$(dirname "$0")" ; pwd -P )"
+if [ -z "$1" ]; then
+    echo "$1"
+    echo "Usage: vpn-connect portal.example.com"
+    echo "       Connects to a GlobalProtect VPN Portal using web-based authentication."
+else
+    sudo echo "Connecting to $1"
+    eval $( "$BASEDIR/gp-saml-gui.py" -v "$1" )
+    echo "$COOKIE" | sudo openconnect --protocol=gp -u "$USER" --passwd-on-stdin "$HOST" --interface="gpvpn" --script="$BASEDIR/vpnc-script"
+fi

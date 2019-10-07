@@ -67,7 +67,7 @@ sudo apt -y install git jq xsel libnss3-tools composer mysql-server dbeaver-ce e
 #install php 7.3
 sudo apt -y install php7.3 php7.3-fpm php7.3-cli php7.3-common php7.3-curl php7.3-gd php7.3-bcmath php7.3-xml php7.3-mbstring php7.3-xml php7.3-xmlrpc php7.3-mysql php7.3-soap php7.3-intl php7.3-ldap php7.3-curl
 #php 7.2 causes errors in valet-linux at the time of the creating of this tool, hence it not being included -- install at your own risk
-#sudo apt -y install php7.2 php7.2-fpm php7.2-cli php7.2-common php7.2-curl php7.2-gd php7.2-bcmath php7.2-xml php7.2-mbstring php7.2-xml php7.2-xmlrpc php7.2-mysql php7.2-soap php7.2-intl php7.2-ldap php7.2-curl
+sudo apt -y install php7.2 php7.2-fpm php7.2-cli php7.2-common php7.2-curl php7.2-gd php7.2-bcmath php7.2-xml php7.2-mbstring php7.2-xml php7.2-xmlrpc php7.2-mysql php7.2-soap php7.2-intl php7.2-ldap php7.2-curl
 #install php 7.1
 sudo apt -y install php7.1 php7.1-fpm php7.1-cli php7.1-common php7.1-curl php7.1-gd php7.1-bcmath php7.1-dom php7.1-mbstring php7.1-xml php7.1-xmlrpc php7.1-zip php7.1-mysql php7.1-soap php7.1-intl php7.1-mcrypt php7.1-ldap php7.1-curl php7.1-mcrypt
 #install php 5.6
@@ -84,7 +84,7 @@ xdebug.remote_autostart=1
 xdebug.idekey=PHPSTORM
 EOF
 sudo echo "$XDEBUG_CONFIG" > /etc/php/7.3/mods-available/xdebug.ini
-#sudo echo "$XDEBUG_CONFIG" > /etc/php/7.2/mods-available/xdebug.ini
+sudo echo "$XDEBUG_CONFIG" > /etc/php/7.2/mods-available/xdebug.ini
 sudo echo "$XDEBUG_CONFIG" > /etc/php/7.1/mods-available/xdebug.ini
 sudo echo "$XDEBUG_CONFIG" > /etc/php/5.6/mods-available/xdebug.ini
 
@@ -104,34 +104,26 @@ sudo mysql -e "create user '$USER'@'%'; grant all on *.* to '$USER'@'%' with gra
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 
+#download magerun
+wget https://files.magerun.net/n98-magerun.phar -O $BASEDIR/helpers/magerun
+chmod +x $BASEDIR/helpers/magerun
+sudo ln -s $BASEDIR/helpers/magerun /usr/local/bin/magerun
+
+#download magerun2
+wget https://files.magerun.net/n98-magerun2.phar -O $BASEDIR/helpers/magerun2
+chmod +x $BASEDIR/helpers/magerun2
+sudo ln -s $BASEDIR/helpers/magerun2 /usr/local/bin/magerun2
+
+#set up helper scripts in /usr/local/bin
+sudo ln -s $BASEDIR/helpers/vpn-connect /usr/local/bin/vpn-connect
+sudo ln -s $BASEDIR/helpers/php-version /usr/local/bin/php-version
+
 #install valet linux
 composer global require cpriego/valet-linux
 
 #run valet install and make a Code folder for storing project directories
 valet install
 mkdir ~/Code
-
-#create our bash alias for changing PHP versions and connecting to the vpn
-read -r -d '' BASH_ALIASES <<EOF
-php-version () {
-    if [ -z "\$1" ]; then
-        echo "Usage: php-version <7.3|7.1|5.6>"
-        echo "       Changes the current PHP version used by the system and valet-linux at the same time."
-        php --version
-        return 1
-    fi
-    sudo valet use \$1
-    sudo update-alternatives --set php "/usr/bin/php\$1"
-}
-
-vpn-connect () {
-    ${BASEDIR}/vpn-connect \$1
-}
-EOF
-echo "$BASH_ALIASES" > ~/.bash_aliases
-
-#reload bash
-source ~/.bashrc
 
 echo "
                                            ____                   _

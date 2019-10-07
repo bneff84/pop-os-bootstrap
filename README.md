@@ -13,33 +13,46 @@ line. The bootstrap script will automatically download and configure software to
 * [Valet Linux](https://github.com/cpriego/valet-linux) - Lightning fast, low-memory local development using PHP/Nginx
 * [OpenConnect 8](https://github.com/dlenski/openconnect) - Command-line VPN Utility with GlobalProtect Support
 * [DBeaver](https://dbeaver.io/) - Database Management GUI for many popular databases
+* [Gnome Evolution](https://wiki.gnome.org/Apps/Evolution) - Arguably the best Mail/Calendar client for Linux distros.
+Supports Microsoft Exchange right out of the box.
 * [Magento Cloud CLI Tool](https://devdocs.magento.com/guides/v2.3/cloud/before/before-workspace-magento-prereqs.html#cloud-ssh-cli-cli-install) - Used for working on Magento Cloud Projects
 * MySQL Server - SQL-based RDBMS
 * Git - Version Control
 * Composer - Package Manager for PHP Projects
-* PHP 7.3
-* PHP 7.1
-* PHP 5.6
+* PHP 7.3, 7.2, 7.1 and 5.6
 
-## Changing PHP Versions
-To change PHP versions, use the Bash Alias `php-version` which will allow you to easily swap between PHP versions for
-both valet and CLI. If you ever need to change **just** the CLI version for any reason, you can do this with the
+## Helper Scripts
+This bootstrap script comes with some helper scripts and will install a few others long the way. These helper scripts are
+symlinked to `/usr/local/bin` and should be available for use in any terminal window.
+
+### magerun
+The [n98-magerun](https://github.com/netz98/n98-magerun) script. AKA the missing CLI for Magento 1. Installed by default
+and globally accessible. If you ever need to update this, just download a new version to `{bootstrap_root}/helpers/magerun`
+
+### magerun2
+The [n98-magerun2](https://github.com/netz98/n98-magerun2) script. AKA the **improved** CLI for Magento 2. Installed by default
+and globally accessible. If you ever need to update this, just download a new version to `{bootstrap_root}/helpers/magerun2`
+
+### php-version
+To change PHP versions, use the `php-version` helper script which will allow you to easily swap between PHP versions for
+both valet (FPM) and CLI. If you ever need to change **just** the CLI version for any reason, you can do this with the
 `sudo update-alternatives --set php /usr/bin/php7.1` command. Just swap out `7.1` for the version you'd like to use
 (it has to already be installed).
 
-## Connecting to a GlobalProtect VPN with web-based authentication
+### vpn-connect
 I connect to a GlobalProtect VPN for my current job, so this bootstrap script includes some setup to allow this to work
 on Pop!_OS for me out of the box. If you use a GlobalProtect VPN with web-based authentication, this **should** work for
 you as well, but I've only tested it with my own personal use case.
 
-To connect to the VPN, open a new terminal window and run the `vpn-connect` bash alias created by the bootstrap script.
+To connect to the VPN, open a new terminal window and run the `vpn-connect` helper included with this bootstrap script.
 This will open a WebKit headless browser window via the `gp-saml-gui.py` [helper script](https://github.com/dlenski/gp-saml-gui)
 , which will allow you to authenticate using web-based auth. The helper will grab the authentication cookie returned by your
 web-based sign-on provider and pass it to the OpenConnect CLI call to log you into the VPN.
 
 The `vpnc-script` included has been altered from the version packaged with OpenConnect, and should be used. It resolves
 a compatibility issue that prevented the VPN's DNS servers from taking precedence over the ones defined by the local
-network.
+network since `valet-linux` installs `dnsmasq` which is used as your sole DNS server. This change forces strict ordering
+for dnsmasq's downstream DNS servers and makes sure the VPN DNS servers are first on that list.
 
 ## Recommended Software
 While I've included most of the "major" software, there are some packages that are not automatically installed, but
