@@ -73,6 +73,21 @@ sudo apt -y install php7.1 php7.1-fpm php7.1-cli php7.1-common php7.1-curl php7.
 #install php 5.6
 sudo apt -y install php5.6 php5.6-fpm php5.6-cli php5.6-common php5.6-curl php5.6-gd php5.6-bcmath php5.6-dom php5.6-mbstring php5.6-xml php5.6-xmlrpc php5.6-zip php5.6-mysql php5.6-soap php5.6-intl php5.6-mcrypt php5.6-ldap php5.6-curl php5.6-mcrypt
 
+#enable xdebug for all php versions
+sudo apt -y install php-xdebug
+read -r -d '' XDEBUG_CONFIG <<EOF
+zend_extension=xdebug.so
+xdebug.remote_enable=1
+xdebug.remote_host=localhost
+xdebug.remote_port=9000
+xdebug.remote_autostart=1
+xdebug.idekey=PHPSTORM
+EOF
+sudo echo "$XDEBUG_CONFIG" > /etc/php/7.3/mods-available/xdebug.ini
+#sudo echo "$XDEBUG_CONFIG" > /etc/php/7.2/mods-available/xdebug.ini
+sudo echo "$XDEBUG_CONFIG" > /etc/php/7.1/mods-available/xdebug.ini
+sudo echo "$XDEBUG_CONFIG" > /etc/php/5.6/mods-available/xdebug.ini
+
 #set PHP 7.1 as the active version as this is what valet-linux prefers to use at the moment
 sudo update-alternatives --set php /usr/bin/php7.1
 
