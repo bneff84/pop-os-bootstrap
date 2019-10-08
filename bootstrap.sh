@@ -63,7 +63,7 @@ sudo apt -y upgrade
 
 #install all required software
 #install mysql server, git, composer, dbeaver (DB GUI), evolution mail client and exchange web services, and dependencies for valet-linux
-sudo apt -y install git jq xsel libnss3-tools composer mysql-server dbeaver-ce evolution evolution-ews
+sudo apt -y install git jq xsel libnss3-tools composer mysql-server dbeaver-ce evolution evolution-ews redis python3-pip
 #install php 7.3
 sudo apt -y install php7.3 php7.3-fpm php7.3-cli php7.3-common php7.3-curl php7.3-gd php7.3-bcmath php7.3-xml php7.3-mbstring php7.3-xml php7.3-xmlrpc php7.3-mysql php7.3-soap php7.3-intl php7.3-ldap php7.3-curl
 #php 7.2 causes errors in valet-linux at the time of the creating of this tool, hence it not being included -- install at your own risk
@@ -114,9 +114,13 @@ wget https://files.magerun.net/n98-magerun2.phar -O $BASEDIR/helpers/magerun2
 chmod +x $BASEDIR/helpers/magerun2
 sudo ln -s $BASEDIR/helpers/magerun2 /usr/local/bin/magerun2
 
+#install sshmenu
+pip3 install sshmenu
+
 #set up helper scripts in /usr/local/bin
 sudo ln -s $BASEDIR/helpers/vpn-connect /usr/local/bin/vpn-connect
 sudo ln -s $BASEDIR/helpers/php-version /usr/local/bin/php-version
+sudo ln -s ~/.local/bin/sshmenu /usr/local/bin/sshmenu
 
 #install valet linux
 composer global require cpriego/valet-linux
@@ -124,6 +128,10 @@ composer global require cpriego/valet-linux
 #run valet install and make a Code folder for storing project directories
 valet install
 mkdir ~/Code
+
+#add a default nginx config file for valet to increase fastcgi buffer size
+echo "fastcgi_buffers 16 16k;
+fastcgi_buffer_size 32k;" > ~/.valet/Nginx/00-global
 
 echo "
                                            ____                   _

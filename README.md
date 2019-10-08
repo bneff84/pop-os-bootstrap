@@ -16,7 +16,9 @@ line. The bootstrap script will automatically download and configure software to
 * [Gnome Evolution](https://wiki.gnome.org/Apps/Evolution) - Arguably the best Mail/Calendar client for Linux distros.
 Supports Microsoft Exchange right out of the box.
 * [Magento Cloud CLI Tool](https://devdocs.magento.com/guides/v2.3/cloud/before/before-workspace-magento-prereqs.html#cloud-ssh-cli-cli-install) - Used for working on Magento Cloud Projects
+* [sshmenu](https://github.com/mmeyer724/sshmenu) - Handy tool for saving SSH connections for easy use later. Add your own connections in `~/.config/sshmenu/config.json`
 * MySQL Server - SQL-based RDBMS
+* Redis - Lightning fast in-memory object/data caching
 * Git - Version Control
 * Composer - Package Manager for PHP Projects
 * PHP 7.3, 7.2, 7.1 and 5.6
@@ -65,6 +67,7 @@ JetBrains software like PHPStorm and other IntelliJ IDEA Platform tools
 * [Google Chrome](https://www.google.com/chrome/) - Google's Web Browser based on Chromium - Don't forget you can
 "install" many web-applications built using PWA architecture (like Office 365/Outlook) so they run like native apps
 * [Slack](https://slack.com/downloads/linux) - Work chat for your whole team!
+* [Ksnip](https://github.com/DamirPorobic/ksnip) - Screenshot utility with quick markup features (compare to Monosnap)
 * Pop!_Shop - Basically a GUI for the command line package manager. Allows you to browse available software and install
 or remove programs. Definitely worth a look for quick applications you might need access to without downloading a `.deb`
 installer.
@@ -83,3 +86,6 @@ Your "super" key is the "Windows" key on most US keyboards.
 * `Ctrl + Super + Left Arrow`/`Ctrl + Super + Right Arrow` - Move window to left/right half of the current workspace
 * `Ctrl + Super + Shift + Left Arrow`/`Ctrl + Super + Shift + Right Arrow` - Move window left/right to the next display
 (multiple monitors)
+
+# TODO
+* Valet throws errors under some PHP versions - make the /usr/bin/valet link to a custom helper that will force valet to run under 7.1 where it's happiest
