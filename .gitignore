@@ -1,1 +1,4 @@
 .idea
+helpers/wp-cli
+helpers/magerun
+helpers/magerun2

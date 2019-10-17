@@ -10,18 +10,20 @@ that you don't need. Feel free to customize this to your liking, and happy codin
 
 To use, just install Pop!_OS 19.04, clone the repo to a local folder, and run the `bootstrap.sh` script from the command
 line. The bootstrap script will automatically download and configure software to get you up and running quickly.
-* [Valet Linux](https://github.com/cpriego/valet-linux) - Lightning fast, low-memory local development using PHP/Nginx
-* [OpenConnect 8](https://github.com/dlenski/openconnect) - Command-line VPN Utility with GlobalProtect Support
-* [DBeaver](https://dbeaver.io/) - Database Management GUI for many popular databases
+* [Valet Linux](https://github.com/cpriego/valet-linux) - Lightning fast, low-memory local development using PHP/Nginx.
+* [OpenConnect 8](https://github.com/dlenski/openconnect) - Command-line VPN Utility with GlobalProtect Support.
+* [DBeaver](https://dbeaver.io/) - Database Management GUI for many popular databases.
 * [Gnome Evolution](https://wiki.gnome.org/Apps/Evolution) - Arguably the best Mail/Calendar client for Linux distros.
 Supports Microsoft Exchange right out of the box.
 * [Magento Cloud CLI Tool](https://devdocs.magento.com/guides/v2.3/cloud/before/before-workspace-magento-prereqs.html#cloud-ssh-cli-cli-install) - Used for working on Magento Cloud Projects
 * [sshmenu](https://github.com/mmeyer724/sshmenu) - Handy tool for saving SSH connections for easy use later. Add your own connections in `~/.config/sshmenu/config.json`
-* MySQL Server - SQL-based RDBMS
-* Redis - Lightning fast in-memory object/data caching
-* Git - Version Control
-* Composer - Package Manager for PHP Projects
-* PHP 7.3, 7.2, 7.1 and 5.6
+* [MySQL Server](https://www.mysql.com/) - SQL-based RDBMS
+* [Redis](https://redis.io/) - Lightning fast in-memory object/data caching.
+* [Git](https://git-scm.com/) - Distributed version control system. If you're not using this for your projects, you're doing it wrong.
+* [Composer](https://getcomposer.org/) - Package Manager for PHP Projects
+* [PHP 7.3, 7.2, 7.1 and 5.6](https://www.php.net/) - My favorite web development language :)
+* [Node JS](https://nodejs.org/en/) - Javascript-based server side processing language. 
+* [Node Version Manager(NVM)](https://github.com/nvm-sh/nvm) Allows the use of multiple versions of node at once.
 
 ## Helper Scripts
 This bootstrap script comes with some helper scripts and will install a few others long the way. These helper scripts are
@@ -34,6 +36,10 @@ and globally accessible. If you ever need to update this, just download a new ve
 ### magerun2
 The [n98-magerun2](https://github.com/netz98/n98-magerun2) script. AKA the **improved** CLI for Magento 2. Installed by default
 and globally accessible. If you ever need to update this, just download a new version to `{bootstrap_root}/helpers/magerun2`
+
+### wp-cli
+The [wp-cli](https://wp-cli.org) script. AKA the missing CLI for Wordpress. Installed by default and globally accessible.
+If you ever need to update this, just download a new version to `{bootstrap_root}/helpers/wp-cli`
 
 ### php-version
 To change PHP versions, use the `php-version` helper script which will allow you to easily swap between PHP versions for
@@ -79,6 +85,8 @@ functionality to that of a certain fruit-based computer. An up-to-date listing o
 [Pop!_OS Website](https://pop.system76.com/docs/keyboard-shortcuts/) but some of the more common ones are outlined here.
 Your "super" key is the "Windows" key on most US keyboards.
 * `Tap the Super Key` - Activities Overview - Shows thumbnails of all open windows and allows global search
+* `Super + Tab` - Switch between active applications (similar to alt-tab on windows)
+* `Super + Grave` - Switch between windows in the current application. For the uninitiated, the "grave" is the ` symbol on the ~ key
 * `Super + V` - Open/Close Calendar/Notifications Tray
 * `Super + T` - Open a new Terminal window
 * `Super + Up Arrow`/`Super + Down Arrow` - Change your virtual desktop workspace
@@ -89,3 +97,8 @@ Your "super" key is the "Windows" key on most US keyboards.
 
 # TODO
 * Valet throws errors under some PHP versions - make the /usr/bin/valet link to a custom helper that will force valet to run under 7.1 where it's happiest
+* Magento won't run under 7.2 without the php7.2-zip module installed, but this can't be installed alongside the older versions of php-zip due to a dependency issue. Find a way to allow this common extension on all php versions
+* Change bootstrap.sh to be able to run incremental updates to the system as well as the initial install by compartmentalizing the functionality into routines
+* Add a universal `mageclean` helper to handle cache flushes via magerun on Magento 1 and cleanup of template/code cache as well as a cache flush on Magento 2
+* Add a universal `mageafterpull` helper to handle all required build steps (composer install, app:config:import, setup:upgrade, setup:di:compile, etc) sequentially for Magento 2 projects so builds can be easily done with one command
+* Look into a way to configure `dnsmasq` to automatically map all local.x.x URLs into the local environment instead of using .test

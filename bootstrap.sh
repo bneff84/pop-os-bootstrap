@@ -63,11 +63,13 @@ sudo apt -y upgrade
 
 #install all required software
 #install mysql server, git, composer, dbeaver (DB GUI), evolution mail client and exchange web services, and dependencies for valet-linux
-sudo apt -y install git jq xsel libnss3-tools composer mysql-server dbeaver-ce evolution evolution-ews redis python3-pip
+sudo apt -y install git jq xsel libnss3-tools composer mysql-server dbeaver-ce evolution evolution-ews redis python3-pip build-essential nodejs npm
+#install node version manager (NVM)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 #install php 7.3
 sudo apt -y install php7.3 php7.3-fpm php7.3-cli php7.3-common php7.3-curl php7.3-gd php7.3-bcmath php7.3-xml php7.3-mbstring php7.3-xml php7.3-xmlrpc php7.3-mysql php7.3-soap php7.3-intl php7.3-ldap php7.3-curl
 #php 7.2 causes errors in valet-linux at the time of the creating of this tool, hence it not being included -- install at your own risk
-sudo apt -y install php7.2 php7.2-fpm php7.2-cli php7.2-common php7.2-curl php7.2-gd php7.2-bcmath php7.2-xml php7.2-mbstring php7.2-xml php7.2-xmlrpc php7.2-mysql php7.2-soap php7.2-intl php7.2-ldap php7.2-curl
+sudo apt -y install php7.2 php7.2-fpm php7.2-cli php7.2-common php7.2-curl php7.2-gd php7.2-bcmath php7.2-xml php7.2-mbstring php7.2-xml php7.2-xmlrpc php7.2-zip php7.2-mysql php7.2-soap php7.2-intl php7.2-ldap php7.2-curl
 #install php 7.1
 sudo apt -y install php7.1 php7.1-fpm php7.1-cli php7.1-common php7.1-curl php7.1-gd php7.1-bcmath php7.1-dom php7.1-mbstring php7.1-xml php7.1-xmlrpc php7.1-zip php7.1-mysql php7.1-soap php7.1-intl php7.1-mcrypt php7.1-ldap php7.1-curl php7.1-mcrypt
 #install php 5.6
@@ -113,6 +115,11 @@ sudo ln -s $BASEDIR/helpers/magerun /usr/local/bin/magerun
 wget https://files.magerun.net/n98-magerun2.phar -O $BASEDIR/helpers/magerun2
 chmod +x $BASEDIR/helpers/magerun2
 sudo ln -s $BASEDIR/helpers/magerun2 /usr/local/bin/magerun2
+
+#download wp-cli
+wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O $BASEDIR/helpers/wp-cli
+chmod +x $BASEDIR/helpers/wp-cli
+sudo ln -s $BASEDIR/helpers/wp-cli /usr/local/bin/wp-cli
 
 #install sshmenu
 pip3 install sshmenu
