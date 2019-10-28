@@ -1,0 +1,40 @@
+#!/bin/bash
+PWD="$(pwd)"
+SCRIPT=$(readlink -f "$0")
+BASEDIR="$( cd "$(dirname "$SCRIPT")" ; pwd -P )"
+REDIS="$(command -v redis-cli)"
+
+if [ -f "$PWD/app/etc/local.xml" ]; then
+  #Magento 1
+  echo "Detected Magento Version 1.x"
+  echo "Flushing cache via magerun cache:flush"
+  "$BASEDIR/magerun" cache:clean
+  if [ -x "$REDIS" ]; then
+    #Redis is installed, flush it
+    echo "Detected Redis is installed, issuing flushall"
+    "$REDIS" flushall
+  fi
+elif [ -f "$PWD/app/etc/env.php" ]; then
+  #Magento 2
+  echo "Detected Magento Version 2.x"
+  echo "Flushing cache via magerun2 cache:flush"
+  "$BASEDIR/magerun2" cache:clean
+  if [ -d "$PWD/var/view_preprocessed" ]; then
+    echo "Removing $PWD/var/view_preprocessed"
+    rm -rf "$PWD/var/view_preprocessed"
+  fi
+  if [ -d "$PWD/pub/static" ]; then
+    echo "Removing $PWD/pub/static"
+    rm -rf "$PWD/pub/static"
+  fi
+  if [ -x "$REDIS" ]; then
+    #Redis is installed, flush it
+    echo "Detected Redis is installed, issuing flushall"
+    "$REDIS" flushall
+  fi
+else
+  echo "Could not detect a Magento version."
+  echo "Ensure that you run the mageclean command from the Magento site root."
+fi
+
+echo "Done!"

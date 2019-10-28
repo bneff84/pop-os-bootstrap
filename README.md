@@ -24,6 +24,7 @@ Supports Microsoft Exchange right out of the box.
 * [PHP 7.3, 7.2, 7.1 and 5.6](https://www.php.net/) - My favorite web development language :)
 * [Node JS](https://nodejs.org/en/) - Javascript-based server side processing language. 
 * [Node Version Manager(NVM)](https://github.com/nvm-sh/nvm) Allows the use of multiple versions of node at once.
+* [Postman](https://www.getpostman.com/) Hands-down the best API tool I've worked with in my career.
 
 ## Helper Scripts
 This bootstrap script comes with some helper scripts and will install a few others long the way. These helper scripts are
@@ -40,6 +41,14 @@ and globally accessible. If you ever need to update this, just download a new ve
 ### wp-cli
 The [wp-cli](https://wp-cli.org) script. AKA the missing CLI for Wordpress. Installed by default and globally accessible.
 If you ever need to update this, just download a new version to `{bootstrap_root}/helpers/wp-cli`
+
+### mageafterpull
+To quickly run all your "after pull" tasks on any Magento project (composer install, setup:upgrade, etc). Auto-detects
+the current version of Magento being used and handles all the standard upgrade tasks for that version.
+
+### mageclean
+To quickly clear all appropriate caches, generated files, etc in both Magento 1 and Magento 2, use this command. It
+should be run from the Magento root, and will auto-detect the Magento version in use and clear all appropriate caches.
 
 ### php-version
 To change PHP versions, use the `php-version` helper script which will allow you to easily swap between PHP versions for
@@ -61,6 +70,10 @@ The `vpnc-script` included has been altered from the version packaged with OpenC
 a compatibility issue that prevented the VPN's DNS servers from taking precedence over the ones defined by the local
 network since `valet-linux` installs `dnsmasq` which is used as your sole DNS server. This change forces strict ordering
 for dnsmasq's downstream DNS servers and makes sure the VPN DNS servers are first on that list.
+
+The `vpn-connect` script now saves your last used gateway so you can run the command without needing to type the gateway
+each time you connect. For your first run, use `vpn-connect portal.example.com` and then on subsequent connections you
+can simply `vpn-connect` to use the last used gateway.
 
 ## Recommended Software
 While I've included most of the "major" software, there are some packages that are not automatically installed, but
@@ -95,10 +108,8 @@ Your "super" key is the "Windows" key on most US keyboards.
 * `Ctrl + Super + Shift + Left Arrow`/`Ctrl + Super + Shift + Right Arrow` - Move window left/right to the next display
 (multiple monitors)
 
-# TODO
+# TODO (in no particular order)
 * Valet throws errors under some PHP versions - make the /usr/bin/valet link to a custom helper that will force valet to run under 7.1 where it's happiest
 * Magento won't run under 7.2 without the php7.2-zip module installed, but this can't be installed alongside the older versions of php-zip due to a dependency issue. Find a way to allow this common extension on all php versions
 * Change bootstrap.sh to be able to run incremental updates to the system as well as the initial install by compartmentalizing the functionality into routines
-* Add a universal `mageclean` helper to handle cache flushes via magerun on Magento 1 and cleanup of template/code cache as well as a cache flush on Magento 2
-* Add a universal `mageafterpull` helper to handle all required build steps (composer install, app:config:import, setup:upgrade, setup:di:compile, etc) sequentially for Magento 2 projects so builds can be easily done with one command
 * Look into a way to configure `dnsmasq` to automatically map all local.x.x URLs into the local environment instead of using .test

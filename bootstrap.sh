@@ -47,6 +47,9 @@ input, but there may be action needed by you to confirm sudo access along the wa
 this process should only take a few minutes to complete. Please sit tight. Your patience will be rewarded!"
 read -p "Press [enter] to continue or ctrl-c to exit"
 
+#create the vendor folder to store downloaded software
+mkdir $BASEDIR/vendor
+
 #add the lid state switch to kernelstub so we don't get stuck in a suspend loop after closing/opening the laptop lid
 sudo kernelstub -a button.lid_init_state=open
 
@@ -124,9 +127,30 @@ sudo ln -s $BASEDIR/helpers/wp-cli /usr/local/bin/wp-cli
 #install sshmenu
 pip3 install sshmenu
 
+#install postman
+sudo apt install libgconf-2-4
+mkdir $BASEDIR/vendor/postman
+wget https://dl.pstmn.io/download/latest/linux64 -O $BASEDIR/vendor/postman-latest.tar.gz
+#this should create a new folder called Postman
+tar -xf $BASEDIR/vendor/postman-latest.tar.gz
+#create the desktop file for the app so we can use the launcher after a relog
+read -r -d '' POSTMAN_DESKTOP <<EOF
+[Desktop Entry]
+Encoding=UTF-8
+Name=Postman
+Exec=$BASEDIR/vendor/Postman/app/Postman %U
+Icon=$BASEDIR/vendor/Postman/app/resources/app/assets/icon.png
+Terminal=false
+Type=Application
+Categories=Development;
+EOF
+echo "$POSTMAN_DESKTOP" > ~/.local/share/applications/postman.desktop
+
 #set up helper scripts in /usr/local/bin
 sudo ln -s $BASEDIR/helpers/vpn-connect /usr/local/bin/vpn-connect
 sudo ln -s $BASEDIR/helpers/php-version /usr/local/bin/php-version
+sudo ln -s $BASEDIR/helpers/mageclean /usr/local/bin/mageclean
+sudo ln -s $BASEDIR/helpers/mageafterpull /usr/local/bin/mageafterpull
 sudo ln -s ~/.local/bin/sshmenu /usr/local/bin/sshmenu
 
 #install valet linux
