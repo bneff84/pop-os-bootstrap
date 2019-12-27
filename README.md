@@ -109,7 +109,7 @@ Your "super" key is the "Windows" key on most US keyboards.
 (multiple monitors)
 
 # TODO (in no particular order)
-* Valet throws errors under some PHP versions - make the /usr/bin/valet link to a custom helper that will force valet to run under 7.1 where it's happiest
 * Magento won't run under 7.2 without the php7.2-zip module installed, but this can't be installed alongside the older versions of php-zip due to a dependency issue. Find a way to allow this common extension on all php versions
 * Change bootstrap.sh to be able to run incremental updates to the system as well as the initial install by compartmentalizing the functionality into routines
 * Look into a way to configure `dnsmasq` to automatically map all local.x.x URLs into the local environment instead of using .test
+* Add a single "magerun" helper which auto-detects the magento version and runs the appropriate underlying tool

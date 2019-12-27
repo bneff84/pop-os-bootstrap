@@ -151,6 +151,7 @@ sudo ln -s $BASEDIR/helpers/vpn-connect /usr/local/bin/vpn-connect
 sudo ln -s $BASEDIR/helpers/php-version /usr/local/bin/php-version
 sudo ln -s $BASEDIR/helpers/mageclean /usr/local/bin/mageclean
 sudo ln -s $BASEDIR/helpers/mageafterpull /usr/local/bin/mageafterpull
+sudo ln -s $BASEDIR/helpers/magelocalize /usr/local/bin/magelocalize
 sudo ln -s ~/.local/bin/sshmenu /usr/local/bin/sshmenu
 
 #install valet linux
@@ -159,6 +160,10 @@ composer global require cpriego/valet-linux
 #run valet install and make a Code folder for storing project directories
 valet install
 mkdir ~/Code
+
+#overwrite the default valet binary with our custom one to force it to always run with php 7.1
+sudo rm -f /usr/local/bin/valet
+sudo ln -s $BASEDIR/helpers/valet /usr/local/bin/valet
 
 #add a default nginx config file for valet to increase fastcgi buffer size
 echo "fastcgi_buffers 16 16k;

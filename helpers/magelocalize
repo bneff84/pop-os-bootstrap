@@ -1,0 +1,44 @@
+#!/bin/bash
+PWD="$(pwd)"
+SCRIPT=$(readlink -f "$0")
+BASEDIR="$( cd "$(dirname "$SCRIPT")" ; pwd -P )"
+REDIS="$(command -v redis-cli)"
+
+#make sure we got url(s) to use
+if [ -z "$1" ]; then
+    echo "Usage: magelocalize [secure_url] [unsecure_url]"
+    echo "       Localizes the Magento site URL, disables caches, etc to prepare a DB for local development"
+else
+  #check Magento version
+  if [ -f "$PWD/app/etc/local.xml" ]; then
+    #Magento 1
+    echo "Detected Magento Version 1.x"
+    MAGERUN="$BASEDIR/magerun"
+    MAGEVERSION=1
+  elif [ -f "$PWD/app/etc/env.php" ]; then
+    #Magento 2
+    echo "Detected Magento Version 2.x"
+    MAGERUN="$BASEDIR/magerun2"
+    MAGEVERSION=2
+  else
+    echo "Could not detect Magento Version"
+    echo "Ensure that you run the magelocalize command from the Magento site root."
+  fi
+
+  #change the site url
+  if [ $MAGEVERSION == 1 ]; then
+    "$MAGERUN" config:set web/unsecure/base_url "$1"
+    "$MAGERUN" config:set web/secure/base_url "$2"
+  elif [ $MAGEVERSION == 2 ]; then
+    "$MAGERUN" config:store:set web/unsecure/base_url "$1"
+    "$MAGERUN" config:store:set web/secure/base_url "$2"
+    #set the default caching application for FPC
+    "$MAGERUN" config:store:set system/full_page_cache/caching_application 1
+  fi
+
+  #clear caches
+  echo "Clearing caches via mageclean helper"
+  "$BASEDIR/mageclean" >> /dev/null
+
+  echo "Done!"
+fi
