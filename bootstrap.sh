@@ -169,6 +169,75 @@ sudo ln -s $BASEDIR/helpers/valet /usr/local/bin/valet
 echo "fastcgi_buffers 16 16k;
 fastcgi_buffer_size 32k;" > ~/.valet/Nginx/00-global
 
+#install the go language and mailhog
+sudo apt install golang-go
+wget https://github.com/mailhog/MailHog/releases/download/v1.0.0/MailHog_linux_amd64 -O $BASEDIR/vendor/mailhog
+chmod +x $BASEDIR/vendor/mailhog
+sudo ln -s $BASEDIR/vendor/mailhog /usr/local/bin/mailhog
+
+#install mailhog as a service
+sudo tee /etc/systemd/system/mailhog.service <<EOL
+[Unit]
+Description=Mailhog
+After=network.target
+[Service]
+User=$USER
+ExecStart=/usr/bin/env /usr/local/bin/mailhog > /dev/null 2>&1 &
+[Install]
+WantedBy=multi-user.target
+EOL
+sudo systemctl daemon-reload
+sudo systemctl enable mailhog
+sudo systemctl start mailhog
+
+# setup sendmail for PHP 5.6
+if [ -f /etc/php/5.6/fpm/php.ini ]; then
+  sudo sed -i "s/;sendmail_path.*/sendmail_path='\/usr\/local\/bin\/mailhog sendmail dev@example.com'/" /etc/php/5.6/fpm/php.ini
+fi
+if [ -f /etc/php/5.6/cli/php.ini ]; then
+  sudo sed -i "s/;sendmail_path.*/sendmail_path='\/usr\/local\/bin\/mailhog sendmail dev@example.com'/" /etc/php/5.6/cli/php.ini
+fi
+
+# setup sendmail for PHP 7.0
+if [ -f /etc/php/7.0/fpm/php.ini ]; then
+  sudo sed -i "s/;sendmail_path.*/sendmail_path='\/usr\/local\/bin\/mailhog sendmail dev@example.com'/" /etc/php/7.0/fpm/php.ini
+fi
+if [ -f /etc/php/7.0/cli/php.ini ]; then
+  sudo sed -i "s/;sendmail_path.*/sendmail_path='\/usr\/local\/bin\/mailhog sendmail dev@example.com'/" /etc/php/7.0/cli/php.ini
+fi
+
+# setup sendmail for PHP 7.1
+if [ -f /etc/php/7.1/fpm/php.ini ]; then
+  sudo sed -i "s/;sendmail_path.*/sendmail_path='\/usr\/local\/bin\/mailhog sendmail dev@example.com'/" /etc/php/7.1/fpm/php.ini
+fi
+if [ -f /etc/php/7.1/cli/php.ini ]; then
+  sudo sed -i "s/;sendmail_path.*/sendmail_path='\/usr\/local\/bin\/mailhog sendmail dev@example.com'/" /etc/php/7.1/cli/php.ini
+fi
+
+# setup sendmail for PHP 7.2
+if [ -f /etc/php/7.2/fpm/php.ini ]; then
+  sudo sed -i "s/;sendmail_path.*/sendmail_path='\/usr\/local\/bin\/mailhog sendmail dev@example.com'/" /etc/php/7.2/fpm/php.ini
+fi
+if [ -f /etc/php/7.2/cli/php.ini ]; then
+  sudo sed -i "s/;sendmail_path.*/sendmail_path='\/usr\/local\/bin\/mailhog sendmail dev@example.com'/" /etc/php/7.2/cli/php.ini
+fi
+
+# setup sendmail for PHP 7.3
+if [ -f /etc/php/7.3/fpm/php.ini ]; then
+  sudo sed -i "s/;sendmail_path.*/sendmail_path='\/usr\/local\/bin\/mailhog sendmail dev@example.com'/" /etc/php/7.3/fpm/php.ini
+fi
+if [ -f /etc/php/7.3/cli/php.ini ]; then
+  sudo sed -i "s/;sendmail_path.*/sendmail_path='\/usr\/local\/bin\/mailhog sendmail dev@example.com'/" /etc/php/7.3/cli/php.ini
+fi
+
+# setup sendmail for PHP 7.4
+if [ -f /etc/php/7.4/fpm/php.ini ]; then
+  sudo sed -i "s/;sendmail_path.*/sendmail_path='\/usr\/local\/bin\/mailhog sendmail dev@example.com'/" /etc/php/7.4/fpm/php.ini
+fi
+if [ -f /etc/php/7.4/cli/php.ini ]; then
+  sudo sed -i "s/;sendmail_path.*/sendmail_path='\/usr\/local\/bin\/mailhog sendmail dev@example.com'/" /etc/php/7.4/cli/php.ini
+fi
+
 echo "
                                            ____                   _
                                           |  _ \  ___  _ __   ___| |

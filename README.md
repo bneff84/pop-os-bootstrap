@@ -25,6 +25,7 @@ Supports Microsoft Exchange right out of the box.
 * [Node JS](https://nodejs.org/en/) - Javascript-based server side processing language. 
 * [Node Version Manager(NVM)](https://github.com/nvm-sh/nvm) Allows the use of multiple versions of node at once.
 * [Postman](https://www.getpostman.com/) Hands-down the best API tool I've worked with in my career.
+* [MailHog](https://github.com/mailhog/MailHog) Capture local email relay to test email functionality during local development. Access the webmail interface at: http://localhost:8025/ 
 
 ## Helper Scripts
 This bootstrap script comes with some helper scripts and will install a few others long the way. These helper scripts are
