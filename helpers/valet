@@ -34,7 +34,7 @@ function check_dependencies() {
 # do it in pure Bash. So, we'll call into PHP CLI here to resolve.
 if [[ -L $SOURCE ]]
 then
-    DIR=$(php7.1 -r "echo dirname(realpath('$SOURCE'));")
+    DIR=$(php7.2 -r "echo dirname(realpath('$SOURCE'));")
 else
     DIR="$( cd "$( dirname "$SOURCE" )" && pwd )"
 fi
@@ -44,7 +44,7 @@ fi
 # Valet CLI script which is written in PHP. Will use PHP to do it.
 if [ ! -f "$DIR/cli/valet.php" ]
 then
-    DIR=$(php7.1 -r "echo realpath('$DIR/../laravel/valet');")
+    DIR=$(php7.2 -r "echo realpath('$DIR/../laravel/valet');")
 fi
 
 # If the command is one of the commands that requires "sudo" privileges
@@ -106,5 +106,5 @@ then
 # and let it handle the request. These are commands which can be run
 # without sudo and don't require taking over terminals like Ngrok.
 else
-    php7.1 "$DIR/cli/valet.php" "$@"
+    php7.2 "$DIR/cli/valet.php" "$@"
 fi

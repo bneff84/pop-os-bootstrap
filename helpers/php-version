@@ -6,4 +6,6 @@ if [ -z "$1" ]; then
 else
     sudo valet use "$1"
     sudo update-alternatives --set php "/usr/bin/php$1"
+    #force a composer global update to re-install php-version appropriate dependencies
+    composer global update
 fi

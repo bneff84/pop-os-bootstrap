@@ -161,7 +161,7 @@ composer global require cpriego/valet-linux
 valet install
 mkdir ~/Code
 
-#overwrite the default valet binary with our custom one to force it to always run with php 7.1
+#overwrite the default valet binary with our custom one to force it to always run with php 7.2
 sudo rm -f /usr/local/bin/valet
 sudo ln -s $BASEDIR/helpers/valet /usr/local/bin/valet
 
