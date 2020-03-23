@@ -35,9 +35,17 @@ if [ $MAGEVERSION != 0 ]; then
 
   #rebuild magento 2
   if [ $MAGEVERSION == 2 ]; then
+    if [ -f "$PWD/vendor/bin/ece-tools" ]; then
+      echo "Detected Magento Cloud ECE Tools"
+      echo "Running vendor/bin/ece-tools patch -n"
+      "$PWD/vendor/bin/ece-tools" patch -n
+    fi
+
     echo "Running bin/magento setup:upgrade && bin/magento setup:di:compile"
     "$PWD/bin/magento" setup:upgrade
     "$PWD/bin/magento" setup:di:compile
+
+    #check for .idea folder and build URN data if needed
     if [ -d "$PWD/.idea" ]; then
       echo "Detected J Idea / PhpStorm .idea folder, generating URN data"
       "$PWD/bin/magento" dev:urn-catalog:generate .idea/misc.xml
