@@ -65,8 +65,8 @@ sudo apt update
 sudo apt -y upgrade
 
 #install all required software
-#install mysql server, git, composer, dbeaver (DB GUI), evolution mail client and exchange web services, and dependencies for valet-linux
-sudo apt -y install git jq xsel libnss3-tools composer mysql-server dbeaver-ce evolution evolution-ews redis python3-pip build-essential nodejs npm
+#install mysql server, git, dbeaver (DB GUI), evolution mail client and exchange web services, and dependencies for valet-linux
+sudo apt -y install git jq xsel libnss3-tools mysql-server dbeaver-ce evolution evolution-ews redis python3-pip build-essential nodejs npm
 #install node version manager (NVM)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 #install php 7.3
@@ -77,6 +77,15 @@ sudo apt -y install php7.2 php7.2-fpm php7.2-cli php7.2-common php7.2-curl php7.
 sudo apt -y install php7.1 php7.1-fpm php7.1-cli php7.1-common php7.1-curl php7.1-gd php7.1-bcmath php7.1-dom php7.1-mbstring php7.1-xml php7.1-xmlrpc php7.1-zip php7.1-mysql php7.1-soap php7.1-intl php7.1-mcrypt php7.1-ldap php7.1-curl php7.1-mcrypt
 #install php 5.6
 sudo apt -y install php5.6 php5.6-fpm php5.6-cli php5.6-common php5.6-curl php5.6-gd php5.6-bcmath php5.6-dom php5.6-mbstring php5.6-xml php5.6-xmlrpc php5.6-zip php5.6-mysql php5.6-soap php5.6-intl php5.6-mcrypt php5.6-ldap php5.6-curl php5.6-mcrypt
+
+#download and install composer
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'e0012edf3e80b6978849f5eff0d4b4e4c79ff1609dd1e613307e16318854d24ae64f26d17af3ef0bf7cfb710ca74755a') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+mv ./composer.phar "$BASEDIR"/helpers/composer
+chmod +x "$BASEDIR"/helpers/composer
+sudo ln -s "$BASEDIR"/helpers/composer /usr/local/bin/composer
 
 #enable xdebug for all php versions
 sudo apt -y install php-xdebug

@@ -2,5 +2,6 @@
 helpers/wp-cli
 helpers/magerun
 helpers/magerun2
+helpers/composer
 vendor
 .last-vpn-portal
