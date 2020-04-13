@@ -26,6 +26,8 @@ if [ $MAGEVERSION != 0 ]; then
   #look for composer.json
   if [ -f "$PWD/composer.json" ]; then
     if [ -x "$COMPOSER" ]; then
+      echo "Attempting composer self-update"
+      "$COMPOSER" self-update
       echo "Detected composer.json file, running composer install"
       "$COMPOSER" install
     else
