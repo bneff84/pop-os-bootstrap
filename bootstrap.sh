@@ -50,9 +50,6 @@ read -p "Press [enter] to continue or ctrl-c to exit"
 #create the vendor folder to store downloaded software
 mkdir "$BASEDIR"/vendor
 
-#add the lid state switch to kernelstub so we don't get stuck in a suspend loop after closing/opening the laptop lid
-sudo kernelstub -a button.lid_init_state=open
-
 #add custom repo for older versions of php
 sudo add-apt-repository ppa:ondrej/php -y
 
@@ -166,11 +163,12 @@ sudo ln -s ~/.local/bin/sshmenu /usr/local/bin/sshmenu
 #install valet linux version 1.0 or higher so we can downgrade to one that support PHP 5.6 when needed
 composer global require cpriego/valet-linux:">=1.0"
 
-#add composer bin to path
+#add composer bin to path and reload .bashrc
 echo "
 #START POP_OS Bootstrap
 export PATH="$PATH:$HOME/.config/composer/vendor/bin"
 #END POP_OS Bootstrap" >> ~/.bashrc
+source ~/.bashrc
 
 #run valet install and make a Code folder for storing project directories
 valet install
