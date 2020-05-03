@@ -48,7 +48,7 @@ this process should only take a few minutes to complete. Please sit tight. Your 
 read -p "Press [enter] to continue or ctrl-c to exit"
 
 #create the vendor folder to store downloaded software
-mkdir $BASEDIR/vendor
+mkdir "$BASEDIR"/vendor
 
 #add the lid state switch to kernelstub so we don't get stuck in a suspend loop after closing/opening the laptop lid
 sudo kernelstub -a button.lid_init_state=open
@@ -70,7 +70,7 @@ sudo apt -y install git jq xsel libnss3-tools mysql-server dbeaver-ce evolution 
 #install node version manager (NVM)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 #install php 7.3
-sudo apt -y install php7.3 php7.3-fpm php7.3-cli php7.3-common php7.3-curl php7.3-gd php7.3-bcmath php7.3-xml php7.3-mbstring php7.3-xml php7.3-xmlrpc php7.3-mysql php7.3-soap php7.3-intl php7.3-ldap php7.3-curl
+sudo apt -y install php7.3 php7.3-fpm php7.3-cli php7.3-common php7.3-curl php7.3-gd php7.3-bcmath php7.3-xml php7.3-mbstring php7.3-xml php7.3-xmlrpc php7.3-zip php7.3-mysql php7.3-soap php7.3-intl php7.3-ldap php7.3-curl
 #php 7.2 causes errors in valet-linux at the time of the creating of this tool, hence it not being included -- install at your own risk
 sudo apt -y install php7.2 php7.2-fpm php7.2-cli php7.2-common php7.2-curl php7.2-gd php7.2-bcmath php7.2-xml php7.2-mbstring php7.2-xml php7.2-xmlrpc php7.2-zip php7.2-mysql php7.2-soap php7.2-intl php7.2-ldap php7.2-curl
 #install php 7.1
@@ -119,29 +119,29 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 
 #download magerun
-wget https://files.magerun.net/n98-magerun.phar -O $BASEDIR/helpers/magerun
-chmod +x $BASEDIR/helpers/magerun
-sudo ln -s $BASEDIR/helpers/magerun /usr/local/bin/magerun
+wget https://files.magerun.net/n98-magerun.phar -O "$BASEDIR"/helpers/magerun
+chmod +x "$BASEDIR"/helpers/magerun
+sudo ln -s "$BASEDIR"/helpers/magerun /usr/local/bin/magerun
 
 #download magerun2
-wget https://files.magerun.net/n98-magerun2.phar -O $BASEDIR/helpers/magerun2
-chmod +x $BASEDIR/helpers/magerun2
-sudo ln -s $BASEDIR/helpers/magerun2 /usr/local/bin/magerun2
+wget https://files.magerun.net/n98-magerun2.phar -O "$BASEDIR"/helpers/magerun2
+chmod +x "$BASEDIR"/helpers/magerun2
+sudo ln -s "$BASEDIR"/helpers/magerun2 /usr/local/bin/magerun2
 
 #download wp-cli
-wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O $BASEDIR/helpers/wp-cli
-chmod +x $BASEDIR/helpers/wp-cli
-sudo ln -s $BASEDIR/helpers/wp-cli /usr/local/bin/wp-cli
+wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O "$BASEDIR"/helpers/wp-cli
+chmod +x "$BASEDIR"/helpers/wp-cli
+sudo ln -s "$BASEDIR"/helpers/wp-cli /usr/local/bin/wp-cli
 
 #install sshmenu
 pip3 install sshmenu
 
 #install postman
-sudo apt install libgconf-2-4
-mkdir $BASEDIR/vendor/postman
-wget https://dl.pstmn.io/download/latest/linux64 -O $BASEDIR/vendor/postman-latest.tar.gz
+sudo apt -y install libgconf-2-4
+mkdir "$BASEDIR"/vendor/postman
+wget https://dl.pstmn.io/download/latest/linux64 -O "$BASEDIR"/vendor/postman-latest.tar.gz
 #this should create a new folder called Postman
-tar -xf $BASEDIR/vendor/postman-latest.tar.gz
+tar -xf "$BASEDIR"/vendor/postman-latest.tar.gz
 #create the desktop file for the app so we can use the launcher after a relog
 read -r -d '' POSTMAN_DESKTOP <<EOF
 [Desktop Entry]
@@ -156,15 +156,21 @@ EOF
 echo "$POSTMAN_DESKTOP" > ~/.local/share/applications/postman.desktop
 
 #set up helper scripts in /usr/local/bin
-sudo ln -s $BASEDIR/helpers/vpn-connect /usr/local/bin/vpn-connect
-sudo ln -s $BASEDIR/helpers/php-version /usr/local/bin/php-version
-sudo ln -s $BASEDIR/helpers/mageclean /usr/local/bin/mageclean
-sudo ln -s $BASEDIR/helpers/mageafterpull /usr/local/bin/mageafterpull
-sudo ln -s $BASEDIR/helpers/magelocalize /usr/local/bin/magelocalize
+sudo ln -s "$BASEDIR"/helpers/vpn-connect /usr/local/bin/vpn-connect
+sudo ln -s "$BASEDIR"/helpers/php-version /usr/local/bin/php-version
+sudo ln -s "$BASEDIR"/helpers/mageclean /usr/local/bin/mageclean
+sudo ln -s "$BASEDIR"/helpers/mageafterpull /usr/local/bin/mageafterpull
+sudo ln -s "$BASEDIR"/helpers/magelocalize /usr/local/bin/magelocalize
 sudo ln -s ~/.local/bin/sshmenu /usr/local/bin/sshmenu
 
-#install valet linux
-composer global require cpriego/valet-linux
+#install valet linux version 1.0 or higher so we can downgrade to one that support PHP 5.6 when needed
+composer global require cpriego/valet-linux:">=1.0"
+
+#add composer bin to path
+echo "
+#START POP_OS Bootstrap
+export PATH="$PATH:$HOME/.config/composer/vendor/bin"
+#END POP_OS Bootstrap" >> ~/.bashrc
 
 #run valet install and make a Code folder for storing project directories
 valet install
@@ -172,17 +178,17 @@ mkdir ~/Code
 
 #overwrite the default valet binary with our custom one to force it to always run with php 7.2
 sudo rm -f /usr/local/bin/valet
-sudo ln -s $BASEDIR/helpers/valet /usr/local/bin/valet
+sudo ln -s "$BASEDIR"/helpers/valet /usr/local/bin/valet
 
 #add a default nginx config file for valet to increase fastcgi buffer size
 echo "fastcgi_buffers 16 16k;
 fastcgi_buffer_size 32k;" > ~/.valet/Nginx/00-global
 
 #install the go language and mailhog
-sudo apt install golang-go
-wget https://github.com/mailhog/MailHog/releases/download/v1.0.0/MailHog_linux_amd64 -O $BASEDIR/vendor/mailhog
-chmod +x $BASEDIR/vendor/mailhog
-sudo ln -s $BASEDIR/vendor/mailhog /usr/local/bin/mailhog
+sudo apt -y install golang-go
+wget https://github.com/mailhog/MailHog/releases/download/v1.0.0/MailHog_linux_amd64 -O "$BASEDIR"/vendor/mailhog
+chmod +x "$BASEDIR"/vendor/mailhog
+sudo ln -s "$BASEDIR"/vendor/mailhog /usr/local/bin/mailhog
 
 #install mailhog as a service
 sudo tee /etc/systemd/system/mailhog.service <<EOL
