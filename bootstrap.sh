@@ -35,12 +35,12 @@ sudo echo "
                                           /////////////////////////////////
                                              */////////////////////////*
 
-       ____                ___  ____  _   _  ___   ___  _  _     ____              _       _
-      |  _ \ ___  _ __    / _ \/ ___|| | / |/ _ \ / _ \| || |   | __ )  ___   ___ | |_ ___| |_ _ __ __ _ _ __
-      | |_) / _ \| '_ \  | | | \___ \| | | | (_) | | | | || |_  |  _ \ / _ \ / _ \| __/ __| __| '__/ _\` | '_ \\
-      |  __/ (_) | |_) | | |_| |___) |_| | |\__, | |_| |__   _| | |_) | (_) | (_) | |_\__ \ |_| | | (_| | |_) |
-      |_|   \___/| .__/___\___/|____/(_) |_|  /_(_)___/   |_|   |____/ \___/ \___/ \__|___/\__|_|  \__,_| .__/
-                 |_| |_____|                                                                            |_|
+               ____                ___  ____  _    ____              _       _
+              |  _ \ ___  _ __    / _ \/ ___|| |  | __ )  ___   ___ | |_ ___| |_ _ __ __ _ _ __
+              | |_) / _ \| '_ \  | | | \___ \| |  |  _ \ / _ \ / _ \| __/ __| __| '__/ _\` | '_ \\
+              |  __/ (_) | |_) | | |_| |___) |_|  | |_) | (_) | (_) | |_\__ \ |_| | | (_| | |_) |
+              |_|   \___/| .__/___\___/|____/(_)  |____/ \___/ \___/ \__|___/\__|_|  \__,_| .__/
+                         |_| |_____|                                                      |_|
 
 This is NOT an un-attended installation script. The majority of the installation can continue without your
 input, but there may be action needed by you to confirm sudo access along the way. With a good internet connection
@@ -53,6 +53,14 @@ mkdir "$BASEDIR"/vendor
 #add custom repo for older versions of php
 sudo add-apt-repository ppa:ondrej/php -y
 
+#add the old ubuntu bionic repo for mysql 5.7, install it, then remove this repo
+echo "deb http://us.archive.ubuntu.com/ubuntu/ bionic restricted main
+deb http://us.archive.ubuntu.com/ubuntu/ bionic-security restricted main
+" | sudo tee /etc/apt/sources.list.d/bionic.list
+sudo apt update
+sudo apt -y install mysql-server-5.7
+sudo rm -f /etc/apt/sources.list.d/bionic.list
+
 # remove preinstalled stuff we don't need/want and cleanup any unused packages
 sudo apt -y remove apache2 geary
 sudo apt -y autoremove
@@ -62,8 +70,8 @@ sudo apt update
 sudo apt -y upgrade
 
 #install all required software
-#install mysql server, git, dbeaver (DB GUI), evolution mail client and exchange web services, and dependencies for valet-linux
-sudo apt -y install git jq xsel libnss3-tools mysql-server dbeaver-ce evolution evolution-ews redis python3-pip build-essential nodejs npm
+#install git, dbeaver (DB GUI), evolution mail client and exchange web services, and dependencies for valet-linux
+sudo apt -y install git jq xsel libnss3-tools dbeaver-ce evolution evolution-ews redis python3-pip build-essential nodejs npm
 #install node version manager (NVM)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 #install php 7.3
@@ -94,10 +102,10 @@ xdebug.remote_port=9000
 xdebug.remote_autostart=1
 xdebug.idekey=PHPSTORM
 EOF
-sudo echo "$XDEBUG_CONFIG" > /etc/php/7.3/mods-available/xdebug.ini
-sudo echo "$XDEBUG_CONFIG" > /etc/php/7.2/mods-available/xdebug.ini
-sudo echo "$XDEBUG_CONFIG" > /etc/php/7.1/mods-available/xdebug.ini
-sudo echo "$XDEBUG_CONFIG" > /etc/php/5.6/mods-available/xdebug.ini
+sudo echo "$XDEBUG_CONFIG" | sudo tee -a /etc/php/7.3/mods-available/xdebug.ini
+sudo echo "$XDEBUG_CONFIG" | sudo tee -a /etc/php/7.2/mods-available/xdebug.ini
+sudo echo "$XDEBUG_CONFIG" | sudo tee -a /etc/php/7.1/mods-available/xdebug.ini
+sudo echo "$XDEBUG_CONFIG" | sudo tee -a /etc/php/5.6/mods-available/xdebug.ini
 
 #set PHP 7.1 as the active version as this is what valet-linux prefers to use at the moment
 sudo update-alternatives --set php /usr/bin/php7.1
@@ -136,16 +144,16 @@ pip3 install sshmenu
 #install postman
 sudo apt -y install libgconf-2-4
 mkdir "$BASEDIR"/vendor/postman
-wget https://dl.pstmn.io/download/latest/linux64 -O "$BASEDIR"/vendor/postman-latest.tar.gz
+wget https://dl.pstmn.io/download/latest/linux64 -O "$BASEDIR"/vendor/postman/postman-latest.tar.gz
 #this should create a new folder called Postman
-tar -xf "$BASEDIR"/vendor/postman-latest.tar.gz
+tar -xf "$BASEDIR"/vendor/postman/postman-latest.tar.gz
 #create the desktop file for the app so we can use the launcher after a relog
 read -r -d '' POSTMAN_DESKTOP <<EOF
 [Desktop Entry]
 Encoding=UTF-8
 Name=Postman
-Exec=$BASEDIR/vendor/Postman/app/Postman %U
-Icon=$BASEDIR/vendor/Postman/app/resources/app/assets/icon.png
+Exec=$BASEDIR/vendor/postman/Postman/app/Postman %U
+Icon=$BASEDIR/vendor/postman/Postman/app/resources/app/assets/icon.png
 Terminal=false
 Type=Application
 Categories=Development;
