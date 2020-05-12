@@ -1,5 +1,21 @@
 #!/bin/bash
 
+#set the target distro version
+TARGET_DISTRO_VERSION="Pop!_OS 20.04 LTS"
+
+#get the current distro version
+DISTRO_VERSION="$( lsb_release -d -s )"
+
+if [ "$DISTRO_VERSION" != "$TARGET_DISTRO_VERSION" ]; then
+  echo "This script is intended for use on $TARGET_DISTRO_VERSION. Your version appears to be $DISTRO_VERSION."
+  echo "It is recommended that you abort this installation as this script WILL install and remove packages"
+  echo "that will likely break your installation if you are not on the appropriate version of the OS."
+  echo ""
+  echo "<<< CONTINUE AT YOUR OWN RISK >>>"
+  echo ""
+  read -p "Press [enter] to continue or ctrl-c to exit"
+fi
+
 #get the current directory of the script
 BASEDIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
