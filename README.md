@@ -109,8 +109,10 @@ Your "super" key is the "Windows" key on most US keyboards.
 * `Ctrl + Super + Shift + Left Arrow`/`Ctrl + Super + Shift + Right Arrow` - Move window left/right to the next display
 (multiple monitors)
 
+# Known Bugs
+* Postman creates a folder outside the vendor folder and doesn't show up in the launcher
+
 # TODO (in no particular order)
-* Magento won't run under 7.2 without the php7.2-zip module installed, but this can't be installed alongside the older versions of php-zip due to a dependency issue. Find a way to allow this common extension on all php versions
 * Change bootstrap.sh to be able to run incremental updates to the system as well as the initial install by compartmentalizing the functionality into routines
 * Look into a way to configure `dnsmasq` to automatically map all local.x.x URLs into the local environment instead of using .test
 * Add a single "magerun" helper which auto-detects the magento version and runs the appropriate underlying tool
