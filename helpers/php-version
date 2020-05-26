@@ -4,8 +4,14 @@ if [ -z "$1" ]; then
     echo "       Changes the current PHP version used by the system and valet-linux at the same time."
     php --version
 else
-    #stop valet services to insure we deactivate the current php-fpm version
-    valet stop
+    #stop all current versions of PHP
+    sudo service php5.6-fpm stop
+    sudo service php7.0-fpm stop
+    sudo service php7.1-fpm stop
+    sudo service php7.2-fpm stop
+    sudo service php7.3-fpm stop
+    #start the correct version of PHP and make it the active CLI version
+    sudo service "php$1-fpm" start
     sudo update-alternatives --set php "/usr/bin/php$1"
     #force a composer global update to re-install php-version appropriate dependencies
     composer global update

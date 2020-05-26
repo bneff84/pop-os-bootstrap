@@ -165,7 +165,7 @@ sudo apt -y install libgconf-2-4
 mkdir "$BASEDIR"/vendor/postman
 wget https://dl.pstmn.io/download/latest/linux64 -O "$BASEDIR"/vendor/postman/postman-latest.tar.gz
 #this should create a new folder called Postman
-tar -xf "$BASEDIR"/vendor/postman/postman-latest.tar.gz
+tar -C "$BASEDIR"/vendor/postman -xf "$BASEDIR"/vendor/postman/postman-latest.tar.gz
 #create the desktop file for the app so we can use the launcher after a relog
 read -r -d '' POSTMAN_DESKTOP <<EOF
 [Desktop Entry]

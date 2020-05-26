@@ -110,7 +110,7 @@ Your "super" key is the "Windows" key on most US keyboards.
 (multiple monitors)
 
 # Known Bugs
-* Postman creates a folder outside the vendor folder and doesn't show up in the launcher
+None
 
 # TODO (in no particular order)
 * Change bootstrap.sh to be able to run incremental updates to the system as well as the initial install by compartmentalizing the functionality into routines

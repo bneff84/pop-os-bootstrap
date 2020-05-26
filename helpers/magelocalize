@@ -29,6 +29,8 @@ else
   if [ $MAGEVERSION == 1 ]; then
     "$MAGERUN" config:set web/unsecure/base_url "$1"
     "$MAGERUN" config:set web/secure/base_url "$2"
+    "$MAGERUN" config:set admin/captcha/enable 0
+    "$MAGERUN" config:set fastlycdn/general/enabled 0
   elif [ $MAGEVERSION == 2 ]; then
     "$MAGERUN" config:store:set web/unsecure/base_url "$1"
     "$MAGERUN" config:store:set web/secure/base_url "$2"
