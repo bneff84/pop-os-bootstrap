@@ -12,12 +12,12 @@ if [ -z "$1" ]; then
       echo "No portal specified, connect to last used portal $PORTAL?"
       read -rp "Hit [enter] to continue connecting to the last portal or ctrl-c to abort"
       sudo echo "Connecting to $PORTAL"
-      eval $( "$BASEDIR/gp-saml-gui.py" -v "$PORTAL" )
-      echo "$COOKIE" | sudo openconnect --protocol=gp -u "$USER" --passwd-on-stdin "$HOST" --interface="gpvpn" --script="$BASEDIR/vpnc-script"
     fi
 else
     sudo echo "Connecting to $1"
     echo "$1" > "$BASEDIR/.last-vpn-portal"
-    eval $( "$BASEDIR/gp-saml-gui.py" -v "$1" )
-    echo "$COOKIE" | sudo openconnect --protocol=gp -u "$USER" --passwd-on-stdin "$HOST" --interface="gpvpn" --script="$BASEDIR/vpnc-script"
+    PORTAL="$1"
 fi
+
+eval $( "$BASEDIR/gp-saml-gui.py" -v "$PORTAL" )
+echo "$COOKIE" | sudo openconnect --protocol=gp -u "$USER" --passwd-on-stdin "$HOST" --interface="gpvpn" --script="$BASEDIR/vpnc-script" --csd-wrapper="/usr/libexec/openconnect/hipreport.sh"
