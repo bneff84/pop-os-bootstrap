@@ -8,8 +8,16 @@ that you don't need. Feel free to customize this to your liking, and happy codin
 
 ## Installation
 
-To use, just install Pop!_OS 19.04, clone the repo to a local folder, and run the `bootstrap.sh` script from the command
+To use, just install Pop!_OS 20.04, clone the repo to a local folder, and run the `bootstrap.sh` script from the command
 line. The bootstrap script will automatically download and configure software to get you up and running quickly.
+
+```shell script
+sudo apt install -y git
+git clone https://github.com/bneff84/pop-os-bootstrap
+./pop-os-bootstrap/bootstrap.sh
+```
+
+### Included Software
 * [Valet Linux](https://github.com/cpriego/valet-linux) - Lightning fast, low-memory local development using PHP/Nginx.
 * [OpenConnect 8](https://github.com/dlenski/openconnect) - Command-line VPN Utility with GlobalProtect Support.
 * [DBeaver](https://dbeaver.io/) - Database Management GUI for many popular databases.
