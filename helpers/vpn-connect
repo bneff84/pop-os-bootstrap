@@ -20,4 +20,4 @@ else
 fi
 
 eval $( "$BASEDIR/gp-saml-gui.py" -v "$PORTAL" )
-echo "$COOKIE" | sudo openconnect --protocol=gp -u "$USER" --passwd-on-stdin "$HOST" --interface="gpvpn" --script="$BASEDIR/vpnc-script" --csd-wrapper="/usr/libexec/openconnect/hipreport.sh"
+echo "$COOKIE" | sudo openconnect --protocol=gp -u "$USER" --passwd-on-stdin "$HOST" --interface="gpvpn" --script="$BASEDIR/vpnc-script" --csd-wrapper="/usr/lib/x86_64-linux-gnu/openconnect/hipreport.sh"

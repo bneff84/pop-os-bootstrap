@@ -69,6 +69,9 @@ mkdir "$BASEDIR"/vendor
 #add custom repo for older versions of php
 sudo add-apt-repository ppa:ondrej/php -y
 
+#add repo for latest builds of openconnect
+sudo add-apt-repository 'deb http://ppa.launchpad.net/dwmw2/openconnect/ubuntu bionic main'
+
 #add the old ubuntu bionic repo for mysql 5.7, install it, then remove this repo
 echo "deb http://us.archive.ubuntu.com/ubuntu/ bionic restricted main
 deb http://us.archive.ubuntu.com/ubuntu/ bionic-security restricted main
