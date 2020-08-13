@@ -31,11 +31,28 @@ else
     "$MAGERUN" config:set web/secure/base_url "$2"
     "$MAGERUN" config:set admin/captcha/enable 0
     "$MAGERUN" config:set fastlycdn/general/enabled 0
+    #disable forcing password changes
+    "$MAGERUN" config:set admin/security/password_lifetime 0
+    "$MAGERUN" config:set admin/security/password_is_forced 0
+    #disable caches that interfere with local dev refreshing
+    "$MAGERUN" cache:disable block_html
+    "$MAGERUN" cache:disable full_page
+    "$MAGERUN" cache:disable layout
   elif [ $MAGEVERSION == 2 ]; then
     "$MAGERUN" config:store:set web/unsecure/base_url "$1"
     "$MAGERUN" config:store:set web/secure/base_url "$2"
+    #disable forcing password changes
+    "$MAGERUN" config:set system/rotation/lifetime 0
+    #disable 2FA if it's installed
+    "$MAGERUN" config:set msp_securitysuite_twofactorauth/general/enabled 0
+    #set the admin url back to admin
+    "$MAGERUN" config:store:delete admin/url/custom_path
     #set the default caching application for FPC
     "$MAGERUN" config:store:set system/full_page_cache/caching_application 1
+    #disable caches that interfere with local dev refreshing
+    "$MAGERUN" cache:disable block_html
+    "$MAGERUN" cache:disable full_page
+    "$MAGERUN" cache:disable layout
   fi
 
   #clear caches
