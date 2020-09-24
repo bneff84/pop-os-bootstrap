@@ -42,6 +42,9 @@ else
       echo "Localizing imported DB using magelocalize"
       "$BASEDIR/magelocalize" "$2" "$3"
     fi
+    #reindex everything
+    echo "Reindexing via magerun"
+    "$MAGERUN" indexer:reindex
   fi
 
   echo "Done!"

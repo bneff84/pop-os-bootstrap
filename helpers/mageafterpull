@@ -54,6 +54,11 @@ if [ $MAGEVERSION != 0 ]; then
     fi
   fi
 
+  #disable caches that interfere with local dev refreshing
+  "$MAGERUN" cache:disable block_html
+  "$MAGERUN" cache:disable full_page
+  "$MAGERUN" cache:disable layout
+
   #clear caches
   echo "Clearing caches via mageclean helper"
   "$BASEDIR/mageclean" >> /dev/null

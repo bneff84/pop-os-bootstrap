@@ -189,6 +189,8 @@ sudo ln -s "$BASEDIR"/helpers/mageclean /usr/local/bin/mageclean
 sudo ln -s "$BASEDIR"/helpers/mageafterpull /usr/local/bin/mageafterpull
 sudo ln -s "$BASEDIR"/helpers/magelocalize /usr/local/bin/magelocalize
 sudo ln -s "$BASEDIR"/helpers/mageimport /usr/local/bin/mageimport
+sudo ln -s "$BASEDIR"/helpers/sslcheck /usr/local/bin/sslcheck
+sudo ln -s "$BASEDIR"/helpers/inotify-consumers /usr/local/bin/inotify-consumers
 sudo ln -s ~/.local/bin/sshmenu /usr/local/bin/sshmenu
 
 #install valet linux version 1.0 or higher so we can downgrade to one that support PHP 5.6 when needed
