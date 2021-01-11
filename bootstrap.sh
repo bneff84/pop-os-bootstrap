@@ -90,7 +90,7 @@ sudo apt -y upgrade
 
 #install all required software
 #install git, dbeaver (DB GUI), evolution mail client and exchange web services, and dependencies for valet-linux
-sudo apt -y install git jq xsel libnss3-tools dbeaver-ce evolution evolution-ews redis python3-pip build-essential nodejs npm
+sudo apt -y install git jq xsel libnss3-tools dbeaver-ce evolution evolution-ews redis python3-pip build-essential nodejs npm curl
 #install node version manager (NVM)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 #install php 7.3
@@ -106,7 +106,7 @@ sudo apt -y install php5.6 php5.6-fpm php5.6-cli php5.6-common php5.6-curl php5.
 
 #download and install composer
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-php -r "if (hash_file('sha384', 'composer-setup.php') === 'e0012edf3e80b6978849f5eff0d4b4e4c79ff1609dd1e613307e16318854d24ae64f26d17af3ef0bf7cfb710ca74755a') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
 mv ./composer.phar "$BASEDIR"/helpers/composer
