@@ -199,7 +199,7 @@ composer global require cpriego/valet-linux:">=1.0"
 #add composer bin to path and reload .bashrc
 echo "
 #START POP_OS Bootstrap
-export PATH="$PATH:$HOME/.config/composer/vendor/bin"
+export PATH=\"$HOME/.config/composer/vendor/bin\":\"\$PATH\"
 #END POP_OS Bootstrap" >> ~/.bashrc
 source ~/.bashrc
 
