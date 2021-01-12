@@ -117,11 +117,17 @@ sudo ln -s "$BASEDIR"/helpers/composer /usr/local/bin/composer
 sudo apt -y install php-xdebug
 read -r -d '' XDEBUG_CONFIG <<EOF
 zend_extension=xdebug.so
+#xdebug 2 config
 xdebug.remote_enable=1
 xdebug.remote_host=localhost
 xdebug.remote_port=9000
 xdebug.remote_autostart=1
 xdebug.idekey=PHPSTORM
+#futureproof for xdebug 3
+xdebug.mode=debug
+xdebug.start_with_request=yes
+xdebug.client_port=9000
+xdebug.client_host=localhost
 EOF
 sudo echo "$XDEBUG_CONFIG" | sudo tee /etc/php/7.3/mods-available/xdebug.ini
 sudo echo "$XDEBUG_CONFIG" | sudo tee /etc/php/7.2/mods-available/xdebug.ini
