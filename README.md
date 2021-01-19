@@ -124,3 +124,5 @@ None
 * Change bootstrap.sh to be able to run incremental updates to the system as well as the initial install by compartmentalizing the functionality into routines
 * Look into a way to configure `dnsmasq` to automatically map all local.x.x URLs into the local environment instead of using .test
 * Add a single "magerun" helper which auto-detects the magento version and runs the appropriate underlying tool
+* Add php.ini configurations to set the default memory limit/other settings to proper values for Magento
+* Remove Evolution as outlook 365 has a PWA that can be installed via Chrome and works much better than Evolution does

@@ -39,12 +39,12 @@ else
     "$MAGERUN" cache:disable full_page
     "$MAGERUN" cache:disable layout
   elif [ $MAGEVERSION == 2 ]; then
-    "$MAGERUN" config:store:set web/unsecure/base_url "$1"
-    "$MAGERUN" config:store:set web/secure/base_url "$2"
+    "$MAGERUN" config:set --lock-env web/unsecure/base_url "$1"
+    "$MAGERUN" config:set --lock-env web/secure/base_url "$2"
     #disable forcing password changes
-    "$MAGERUN" config:set system/rotation/lifetime 0
+    "$MAGERUN" config:set --lock-env system/rotation/lifetime 0
     #disable 2FA if it's installed
-    "$MAGERUN" config:set msp_securitysuite_twofactorauth/general/enabled 0
+    "$MAGERUN" config:set --lock-env msp_securitysuite_twofactorauth/general/enabled 0
     #set the admin url back to admin
     "$MAGERUN" config:store:delete admin/url/custom_path
     #set the default caching application for FPC

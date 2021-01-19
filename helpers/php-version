@@ -10,9 +10,12 @@ else
     sudo service php7.1-fpm stop
     sudo service php7.2-fpm stop
     sudo service php7.3-fpm stop
+    #disable all current versions of PHP
+    sudo systemctl disable php5.6-fpm php7.0-fpm php7.1-fpm php7.2-fpm php7.3-fpm
     #start the correct version of PHP and make it the active CLI version
     sudo service "php$1-fpm" start
     sudo update-alternatives --set php "/usr/bin/php$1"
+    sudo systemctl enable "php$1-fpm"
     #force a composer global update to re-install php-version appropriate dependencies
     composer global update
     #tell valet to use this version of php
