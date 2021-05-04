@@ -111,9 +111,6 @@ sudo echo "$XDEBUG_CONFIG" | sudo tee /etc/php/7.1/mods-available/xdebug.ini
 sudo echo "$XDEBUG_CONFIG" | sudo tee /etc/php/7.0/mods-available/xdebug.ini
 sudo echo "$XDEBUG_CONFIG" | sudo tee /etc/php/5.6/mods-available/xdebug.ini
 
-#set PHP 7.2 as the active version as this is what valet-linux prefers to use at the moment
-sudo update-alternatives --set php /usr/bin/php7.2
-
 #install Magento Cloud CLI Tool
 curl -sS https://accounts.magento.cloud/cli/installer | php
 
@@ -152,7 +149,7 @@ sudo ln -s "$BASEDIR"/helpers/sslcheck /usr/local/bin/sslcheck
 sudo ln -s "$BASEDIR"/helpers/inotify-consumers /usr/local/bin/inotify-consumers
 sudo ln -s ~/.local/bin/sshmenu /usr/local/bin/sshmenu
 
-#install valet linux version 1.0 or higher so we can downgrade to one that support PHP 5.6 when needed
+#install valet linux version 1.0 or higher so we can downgrade to one that supports PHP 5.6 when needed
 composer global require cpriego/valet-linux:">=1.0"
 
 #add composer bin to path and reload .bashrc
@@ -160,15 +157,11 @@ echo "
 #START Bootstrap
 export PATH=\"$HOME/.config/composer/vendor/bin\":\"\$PATH\"
 #END Bootstrap" >> ~/.bashrc
-source ~/.bashrc
+. ~/.bashrc
 
 #run valet install and make a Code folder for storing project directories
 valet install
 mkdir ~/Code
-
-#overwrite the default valet binary with our custom one to force it to always run with php 7.2
-sudo rm -f /usr/local/bin/valet
-sudo ln -s "$BASEDIR"/helpers/valet /usr/local/bin/valet
 
 #add a default nginx config file for valet to increase fastcgi buffer size and timeouts
 echo "fastcgi_buffers 16 16k;
