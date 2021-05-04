@@ -157,7 +157,11 @@ echo "
 #START Bootstrap
 export PATH=\"$HOME/.config/composer/vendor/bin\":\"\$PATH\"
 #END Bootstrap" >> ~/.bashrc
-. ~/.bashrc
+# see: https://askubuntu.com/questions/896717/updating-the-bashrc-file-for-a-script
+# we can't use source ~/.bashrc here because this shell is not interactive and .bashrc will exit without adding our new
+# composer folder to the path. instead, we will manually add it for this shell below which should get valet to show up
+# for immediate use
+export PATH="$HOME/.config/composer/vendor/bin":"$PATH"
 
 #run valet install and make a Code folder for storing project directories
 valet install
