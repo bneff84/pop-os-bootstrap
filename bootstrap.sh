@@ -52,7 +52,7 @@ sudo apt -y upgrade
 
 #install all required software
 #install git, dbeaver (DB GUI), and dependencies for valet-linux
-sudo apt -y install git jq xsel libnss3-tools dbeaver-ce redis python3-pip build-essential nodejs npm curl
+sudo apt -y install git jq xsel libnss3-tools redis python3-pip build-essential nodejs npm curl
 #install node version manager (NVM)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 #install php 7.3
