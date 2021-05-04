@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #set the target distro version
-TARGET_DISTRO_VERSION="Pop!_OS 20.04 LTS"
+TARGET_DISTRO_VERSION="Ubuntu 20.04.2 LTS"
 
 #get the current distro version
 DISTRO_VERSION="$( lsb_release -d -s )"
@@ -20,45 +20,7 @@ fi
 BASEDIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 #prompt user for sudo as we're going to need it
-sudo echo "
-                                                   ///////////////
-                                             */////////////////////////*
-                                          /////////////////////////////////
-                                       ///////////////////////////////////////
-                                     /////////,           //////////////////////
-                                   ////////*                */////////////////////
-                                  ///////                     /////////////////////
-                                .///////         ////         ./////////////////////.
-                               *////////*        /////.        //////////////////////,
-                               //////////*        /////        /////.     ////////////
-                              ////////////*        ////*       ////.        ///////////
-                             //////////////*        ///       /////        *////////////
-                             ///////////////*                //////        /////////////
-                             /////////////////             ////////       //////////////
-                             //////////////////         ,/////////.      ///////////////
-                             ///////////////////       *//////////     .////////////////
-                             ////////////////////       //////////    //////////////////
-                             /////////////////////       /////////   ///////////////////
-                             //////////////////////       //////////////////////////////
-                              //////////////////////      ////////,////////////////////
-                               //////////////////////,     /////    //////////////////
-                               *///////////////////////   //////,   /////////////////,
-                                ,///////////////////////////////////////////////////,
-                                  /////////                               /////////
-                                   ////////                               ////////
-                                     ///////*,,,,,,,,,,,,,,,,,,,,,,,,,,,*///////
-                                       ///////////////////////////////////////
-                                          /////////////////////////////////
-                                             */////////////////////////*
-
-               ____                ___  ____  _    ____              _       _
-              |  _ \ ___  _ __    / _ \/ ___|| |  | __ )  ___   ___ | |_ ___| |_ _ __ __ _ _ __
-              | |_) / _ \| '_ \  | | | \___ \| |  |  _ \ / _ \ / _ \| __/ __| __| '__/ _\` | '_ \\
-              |  __/ (_) | |_) | | |_| |___) |_|  | |_) | (_) | (_) | |_\__ \ |_| | | (_| | |_) |
-              |_|   \___/| .__/___\___/|____/(_)  |____/ \___/ \___/ \__|___/\__|_|  \__,_| .__/
-                         |_| |_____|                                                      |_|
-
-This is NOT an un-attended installation script. The majority of the installation can continue without your
+sudo echo "This is NOT an un-attended installation script. The majority of the installation can continue without your
 input, but there may be action needed by you to confirm sudo access along the way. With a good internet connection
 this process should only take a few minutes to complete. Please sit tight. Your patience will be rewarded!"
 read -p "Press [enter] to continue or ctrl-c to exit"
@@ -89,8 +51,8 @@ sudo apt update
 sudo apt -y upgrade
 
 #install all required software
-#install git, dbeaver (DB GUI), evolution mail client and exchange web services, and dependencies for valet-linux
-sudo apt -y install git jq xsel libnss3-tools dbeaver-ce evolution evolution-ews redis python3-pip build-essential nodejs npm curl
+#install git, dbeaver (DB GUI), and dependencies for valet-linux
+sudo apt -y install git jq xsel libnss3-tools dbeaver-ce redis python3-pip build-essential nodejs npm curl
 #install node version manager (NVM)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 #install php 7.3
@@ -104,10 +66,24 @@ sudo apt -y install php7.0 php7.0-fpm php7.0-cli php7.0-common php7.0-curl php7.
 #install php 5.6
 sudo apt -y install php5.6 php5.6-fpm php5.6-cli php5.6-common php5.6-curl php5.6-gd php5.6-bcmath php5.6-dom php5.6-mbstring php5.6-xml php5.6-xmlrpc php5.6-zip php5.6-mysql php5.6-soap php5.6-intl php5.6-mcrypt php5.6-ldap php5.6-curl php5.6-mcrypt
 
+#stop all current versions of PHP
+sudo service php5.6-fpm stop
+sudo service php7.0-fpm stop
+sudo service php7.1-fpm stop
+sudo service php7.2-fpm stop
+sudo service php7.3-fpm stop
+#disable all current versions of PHP (they can fight over the socket file when multiple versions are running at once)
+sudo systemctl disable php5.6-fpm php7.0-fpm php7.1-fpm php7.2-fpm php7.3-fpm
+#start PHP 7.3 as our default version and make it the active CLI version
+sudo service "php7.3-fpm" start
+sudo update-alternatives --set php "/usr/bin/php7.3"
+sudo systemctl enable "php7.3-fpm"
+
 #download and install composer
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-php composer-setup.php
+#install latest composer version 1 release (version 2 doesn't work properly with valet/magento at this time)
+php composer-setup.php --1
 php -r "unlink('composer-setup.php');"
 mv ./composer.phar "$BASEDIR"/helpers/composer
 chmod +x "$BASEDIR"/helpers/composer
@@ -141,9 +117,6 @@ sudo update-alternatives --set php /usr/bin/php7.2
 #install Magento Cloud CLI Tool
 curl -sS https://accounts.magento.cloud/cli/installer | php
 
-#install openconnect and the utility to use it with GP OKTA based authentication
-sudo apt -y install gir1.2-webkit2-4.0 openconnect
-
 #setup the user in mysql to work from anywhere with no password for easy access
 sudo mysql -e "create user '$USER'@'%'; grant all on *.* to '$USER'@'%' with grant option; flush privileges;"
 
@@ -169,27 +142,7 @@ sudo ln -s "$BASEDIR"/helpers/wp-cli /usr/local/bin/wp-cli
 #install sshmenu
 pip3 install sshmenu
 
-#install postman
-sudo apt -y install libgconf-2-4
-mkdir "$BASEDIR"/vendor/postman
-wget https://dl.pstmn.io/download/latest/linux64 -O "$BASEDIR"/vendor/postman/postman-latest.tar.gz
-#this should create a new folder called Postman
-tar -C "$BASEDIR"/vendor/postman -xf "$BASEDIR"/vendor/postman/postman-latest.tar.gz
-#create the desktop file for the app so we can use the launcher after a relog
-read -r -d '' POSTMAN_DESKTOP <<EOF
-[Desktop Entry]
-Encoding=UTF-8
-Name=Postman
-Exec=$BASEDIR/vendor/postman/Postman/app/Postman %U
-Icon=$BASEDIR/vendor/postman/Postman/app/resources/app/assets/icon.png
-Terminal=false
-Type=Application
-Categories=Development;
-EOF
-echo "$POSTMAN_DESKTOP" > ~/.local/share/applications/postman.desktop
-
 #set up helper scripts in /usr/local/bin
-sudo ln -s "$BASEDIR"/helpers/vpn-connect /usr/local/bin/vpn-connect
 sudo ln -s "$BASEDIR"/helpers/php-version /usr/local/bin/php-version
 sudo ln -s "$BASEDIR"/helpers/mageclean /usr/local/bin/mageclean
 sudo ln -s "$BASEDIR"/helpers/mageafterpull /usr/local/bin/mageafterpull
@@ -204,9 +157,9 @@ composer global require cpriego/valet-linux:">=1.0"
 
 #add composer bin to path and reload .bashrc
 echo "
-#START POP_OS Bootstrap
+#START Bootstrap
 export PATH=\"$HOME/.config/composer/vendor/bin\":\"\$PATH\"
-#END POP_OS Bootstrap" >> ~/.bashrc
+#END Bootstrap" >> ~/.bashrc
 source ~/.bashrc
 
 #run valet install and make a Code folder for storing project directories
