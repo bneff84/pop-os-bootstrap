@@ -9,7 +9,8 @@ MAGEVERSION=0
 if [ -f "$PWD/app/etc/local.xml" ]; then
   #Magento 1
   echo "Detected Magento Version 1.x"
-  MAGERUN="$BASEDIR/magerun"
+  #force php version to 7.1 for magento 1 magerun version
+  MAGERUN="php7.1 $BASEDIR/magerun"
   MAGEVERSION=1
 elif [ -f "$PWD/app/etc/env.php" ]; then
   #Magento 2
@@ -55,9 +56,9 @@ if [ $MAGEVERSION != 0 ]; then
   fi
 
   #disable caches that interfere with local dev refreshing
-  "$MAGERUN" cache:disable block_html
-  "$MAGERUN" cache:disable full_page
-  "$MAGERUN" cache:disable layout
+  $MAGERUN cache:disable block_html
+  $MAGERUN cache:disable full_page
+  $MAGERUN cache:disable layout
 
   #clear caches
   echo "Clearing caches via mageclean helper"

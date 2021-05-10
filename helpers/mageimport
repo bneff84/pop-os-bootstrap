@@ -12,7 +12,8 @@ else
   if [ -f "$PWD/app/etc/local.xml" ]; then
     #Magento 1
     echo "Detected Magento Version 1.x"
-    MAGERUN="$BASEDIR/magerun"
+    #force php version to 7.1 for magento 1 magerun version
+    MAGERUN="php7.1 $BASEDIR/magerun"
     MAGEVERSION=1
   elif [ -f "$PWD/app/etc/env.php" ]; then
     #Magento 2
@@ -26,13 +27,13 @@ else
 
   #change the site url
   if [[ $MAGEVERSION == 1 || $MAGEVERSION == 2 ]]; then
-    "$MAGERUN" db:drop -f
-    "$MAGERUN" db:create
+    $MAGERUN db:drop -f
+    $MAGERUN db:create
     #import using gzip if needed
     if [[ $1 == *".gz"* ]]; then
-      "$MAGERUN" db:import -c gzip "$1"
+      $MAGERUN db:import -c gzip "$1"
     else
-      "$MAGERUN" db:import "$1"
+      $MAGERUN db:import "$1"
     fi
     #rebuild the environment
     echo "Rebuilding the environment using mageafterpull"
@@ -44,7 +45,7 @@ else
     fi
     #reindex everything
     echo "Reindexing via magerun"
-    "$MAGERUN" indexer:reindex
+    $MAGERUN indexer:reindex
   fi
 
   echo "Done!"

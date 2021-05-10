@@ -8,7 +8,7 @@ if [ -f "$PWD/app/etc/local.xml" ]; then
   #Magento 1
   echo "Detected Magento Version 1.x"
   echo "Flushing cache via magerun cache:flush"
-  "$BASEDIR/magerun" cache:clean
+  php7.1 "$BASEDIR/magerun" cache:clean
   if [ -x "$REDIS" ]; then
     #Redis is installed, flush it
     echo "Detected Redis is installed, issuing flushall"

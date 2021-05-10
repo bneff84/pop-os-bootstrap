@@ -13,12 +13,13 @@ else
   if [ -f "$PWD/app/etc/local.xml" ]; then
     #Magento 1
     echo "Detected Magento Version 1.x"
-    MAGERUN="$BASEDIR/magerun"
+    #force php version to 7.1 for magento 1 magerun version
+    MAGERUN="php7.1 $BASEDIR/magerun"
     MAGEVERSION=1
   elif [ -f "$PWD/app/etc/env.php" ]; then
     #Magento 2
     echo "Detected Magento Version 2.x"
-    MAGERUN="$BASEDIR/magerun2"
+    MAGERUN="php7.1 $BASEDIR/magerun2"
     MAGEVERSION=2
   else
     echo "Could not detect Magento Version"
@@ -27,24 +28,24 @@ else
 
   #change the site url
   if [ $MAGEVERSION == 1 ]; then
-    "$MAGERUN" config:set web/unsecure/base_url "$1"
-    "$MAGERUN" config:set web/secure/base_url "$2"
-    "$MAGERUN" config:set admin/captcha/enable 0
-    "$MAGERUN" config:set fastlycdn/general/enabled 0
+    $MAGERUN config:set web/unsecure/base_url "$1"
+    $MAGERUN config:set web/secure/base_url "$2"
+    $MAGERUN config:set admin/captcha/enable 0
+    $MAGERUN config:set fastlycdn/general/enabled 0
     #disable forcing password changes
-    "$MAGERUN" config:set admin/security/password_lifetime 0
-    "$MAGERUN" config:set admin/security/password_is_forced 0
+    $MAGERUN config:set admin/security/password_lifetime 0
+    $MAGERUN config:set admin/security/password_is_forced 0
     #disable caches that interfere with local dev refreshing
-    "$MAGERUN" cache:disable block_html
-    "$MAGERUN" cache:disable full_page
-    "$MAGERUN" cache:disable layout
+    $MAGERUN cache:disable block_html
+    $MAGERUN cache:disable full_page
+    $MAGERUN cache:disable layout
   elif [ $MAGEVERSION == 2 ]; then
-    "$MAGERUN" config:set --lock-env web/unsecure/base_url "$1"
-    "$MAGERUN" config:set --lock-env web/secure/base_url "$2"
+    "$MAGERUN" config:store:set web/unsecure/base_url "$1"
+    "$MAGERUN" config:store:set web/secure/base_url "$2"
     #disable forcing password changes
-    "$MAGERUN" config:set --lock-env system/rotation/lifetime 0
+    "$MAGERUN" config:store:set system/rotation/lifetime 0
     #disable 2FA if it's installed
-    "$MAGERUN" config:set --lock-env msp_securitysuite_twofactorauth/general/enabled 0
+    "$MAGERUN" config:store:set msp_securitysuite_twofactorauth/general/enabled 0
     #set the admin url back to admin
     "$MAGERUN" config:store:delete admin/url/custom_path
     #set the default caching application for FPC

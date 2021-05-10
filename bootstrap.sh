@@ -31,9 +31,6 @@ mkdir "$BASEDIR"/vendor
 #add custom repo for older versions of php
 sudo add-apt-repository ppa:ondrej/php -y
 
-#add repo for latest builds of openconnect
-sudo add-apt-repository 'deb http://ppa.launchpad.net/dwmw2/openconnect/ubuntu bionic main'
-
 #add the old ubuntu bionic repo for mysql 5.7, install it, then remove this repo
 echo "deb http://us.archive.ubuntu.com/ubuntu/ bionic restricted main
 deb http://us.archive.ubuntu.com/ubuntu/ bionic-security restricted main
@@ -90,7 +87,7 @@ chmod +x "$BASEDIR"/helpers/composer
 sudo ln -s "$BASEDIR"/helpers/composer /usr/local/bin/composer
 
 #enable xdebug for all php versions
-sudo apt -y install php-xdebug
+sudo apt -y install php-xdebug php7.3-xdebug php7.2-xdebug php7.1-xdebug php5.6-xdebug
 read -r -d '' XDEBUG_CONFIG <<EOF
 zend_extension=xdebug.so
 #xdebug 2 config
@@ -104,6 +101,7 @@ xdebug.mode=debug
 xdebug.start_with_request=yes
 xdebug.client_port=9000
 xdebug.client_host=localhost
+xdebug.log_level=0
 EOF
 sudo echo "$XDEBUG_CONFIG" | sudo tee /etc/php/7.3/mods-available/xdebug.ini
 sudo echo "$XDEBUG_CONFIG" | sudo tee /etc/php/7.2/mods-available/xdebug.ini
